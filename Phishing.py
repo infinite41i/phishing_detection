@@ -2,8 +2,9 @@ CLF_RUNS = 3 #!make this 10!
 
 import pandas as pd
 import numpy as np
+from scipy.io import arff
 
-from sklearn.datasets import fetch_openml
+# from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 
 from sklearn.ensemble import RandomForestClassifier
@@ -13,11 +14,12 @@ from sklearn import svm
 
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
-phishing_data = fetch_openml(name='PhishingWebsites')
+initial_data = arff.loadarff('./Training_Dataset.arff')
 
-data = phishing_data.data
-target = phishing_data.target
-# print(data.dtypes)
+phishing_data = pd.DataFrame(initial_data[0])
+data = phishing_data.iloc[:, 0:30]
+target = phishing_data.iloc[:, 30]
+print(data.info())
 
 #Random Forest Classifier
 def run_rfc():
