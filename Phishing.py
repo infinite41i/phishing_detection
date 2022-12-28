@@ -6,6 +6,7 @@ import arff
 from time import time
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -16,7 +17,7 @@ from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_sc
 
 #import dataset
 with open('./Training_Dataset.arff', 'r') as dataset_file:
-    initial_data = arff.load(dataset_file, encode_nominal=True)
+    initial_data = arff.load(dataset_file, encode_nominal=False)
     dataset_file.close()
 
 #split data and attributes
@@ -31,10 +32,18 @@ phishing_data = pd.DataFrame(data=data_arr, columns=col_arr_names)
 data = phishing_data.iloc[:, 0:30]
 target = phishing_data.iloc[:, 30]
 
+enc = OneHotEncoder(sparse=False)
+encoded = enc.fit_transform(data)
+# create the names for the one-hot encoded categorical features
+categorical_columns = [f'{col}_{cat}' for i, col in enumerate(data.columns) for cat in enc.categories_[i]]
+# put the features into a dataframe and replace with initial data
+data = pd.DataFrame(encoded, columns=categorical_columns)
+print(data)
+
 def get_scores(y_test, y):
-    res = [precision_score(y_test, y)*100,
-               recall_score(y_test, y)*100,
-               f1_score(y_test, y)*100, 
+    res = [precision_score(y_test, y, pos_label='1')*100,
+               recall_score(y_test, y, pos_label='1')*100,
+               f1_score(y_test, y, pos_label='1')*100, 
                accuracy_score(y_test, y)*100]
     return res
 
