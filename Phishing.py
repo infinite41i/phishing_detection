@@ -31,7 +31,9 @@ phishing_data = pd.DataFrame(data=data_arr, columns=col_arr_names)
 #split data and target
 data = phishing_data.iloc[:, 0:30]
 target = phishing_data.iloc[:, 30]
+data_shape = data.shape
 
+#encode nominal data
 enc = OneHotEncoder(sparse=False)
 encoded = enc.fit_transform(data)
 # create the names for the one-hot encoded categorical features
@@ -39,6 +41,7 @@ categorical_columns = [f'{col}_{cat}' for i, col in enumerate(data.columns) for 
 # put the features into a dataframe and replace with initial data
 data = pd.DataFrame(encoded, columns=categorical_columns)
 print(data)
+print(f"original data feature vector size: {data_shape}")
 
 def get_scores(y_test, y):
     res = [precision_score(y_test, y, pos_label='1')*100,
