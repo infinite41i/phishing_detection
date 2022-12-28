@@ -108,7 +108,7 @@ def run_svm():
 
 def run_k_fold(func):
     partial_results = np.array([func() for _ in range(CLF_RUNS)])
-    scores = np.average(partial_results[:,0:-1], axis=0)
+    scores = np.average(partial_results, axis=0)
     times = np.sum(partial_results[:, -1])
     res = np.concatenate((scores, times), axis=None)
     return res
@@ -119,7 +119,7 @@ def run_experminet():
                 'MLP': run_k_fold(run_mlp),
                 'SVM': run_k_fold(run_svm)}
 
-    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Total Time'] #add time
+    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Avg Time', 'Total Time'] #add time
     res = pd.DataFrame(res_dict, index=rows)
     return res
 
