@@ -29,7 +29,13 @@ col_arr_names = col_arr[:, 0]
 phishing_data = pd.DataFrame(data=data_arr, columns=col_arr_names)
 
 #split data and target
-data = phishing_data.iloc[:, 0:30]
+features = ['having_IP_Address', 'URL_Length', 'Shortining_Service', 'having_At_Symbol',
+            'double_slash_redirecting', 'Prefix_Suffix', 'having_Sub_Domain',
+            'SSLfinal_State', 'Domain_registeration_length', 'Favicon', 'HTTPS_token',
+            'Request_URL', 'URL_of_Anchor', 'SFH', 'Redirect', 'on_mouseover',
+            'RightClick', 'popUpWidnow', 'age_of_domain', 'DNSRecord', 'web_traffic',
+            'Page_Rank']
+data = phishing_data[features]
 target = phishing_data.iloc[:, 30]
 data_shape = data.shape
 
