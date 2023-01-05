@@ -16,7 +16,7 @@ from sklearn import svm
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 #import dataset
-with open('./Training_Dataset.arff', 'r') as dataset_file:
+with open('./old.arff', 'r') as dataset_file:
     initial_data = arff.load(dataset_file, encode_nominal=False)
     dataset_file.close()
 
