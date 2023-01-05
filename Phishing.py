@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import CategoricalNB
 from sklearn.neural_network import MLPClassifier
 from sklearn import svm
 
@@ -71,11 +71,11 @@ def run_rfc():
     
     return scores + [total_time]
 
-#Gaussian Naive Bayesian
+#Categorical Naive Bayesian
 def run_bayes():
     start_time = time()
     X_train, X_test, y_train, y_test = train_test_split(data, target)
-    clf = GaussianNB()
+    clf = CategoricalNB()
     clf.fit(X_train, y_train)
     
     y = clf.predict(X_test)
