@@ -1,4 +1,4 @@
-CLF_RUNS = 10 #!make this 10!
+CLF_RUNS = 1 #!make this 10!
 
 import pandas as pd
 import numpy as np
@@ -128,13 +128,21 @@ def run_experminet():
                 'MLP': run_k_fold(run_mlp),
                 'SVM': run_k_fold(run_svm)}
 
-    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Avg Time', 'Total Time'] #add time
+    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Avg. Time', 'Total Time'] #add time
     res = pd.DataFrame(res_dict, index=rows)
-    return res
+    return res, rows
 
 def main():
-    res = run_experminet()
-    print(res)
+    res, rows = run_experminet()
+    print("\n",res,"\n")
+    maxargs =  [res.loc[rows[0]].idxmax(),
+                res.loc[rows[1]].idxmax(),
+                res.loc[rows[2]].idxmax(),
+                res.loc[rows[3]].idxmax(),
+                res.loc[rows[4]].idxmin(),
+                res.loc[rows[5]].idxmin()]
+    for i in range(len(rows)):
+        print(f"{'Max' if i<4 else 'Min'} {rows[i]} \t is for {maxargs[i]} with the value of \t {res.loc[rows[i]][maxargs[i]]}")
 
 if(__name__ == "__main__"):
     main()
