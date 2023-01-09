@@ -17,7 +17,7 @@ from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_sc
 
 #import dataset
 with open('./old.arff', 'r') as dataset_file:
-    initial_data = arff.load(dataset_file, encode_nominal=False)
+    initial_data = arff.load(dataset_file, encode_nominal=True)
     dataset_file.close()
 
 #split data and attributes
@@ -38,21 +38,13 @@ features = ['having_IP_Address', 'URL_Length', 'Shortining_Service', 'having_At_
 data = phishing_data[features]
 target = phishing_data.iloc[:, 30]
 data_shape = data.shape
-
-#encode nominal data
-enc = OneHotEncoder(sparse=False)
-encoded = enc.fit_transform(data)
-# create the names for the one-hot encoded categorical features
-categorical_columns = [f'{col}_{cat}' for i, col in enumerate(data.columns) for cat in enc.categories_[i]]
-# put the features into a dataframe and replace with initial data
-data = pd.DataFrame(encoded, columns=categorical_columns)
 print(data)
 print(f"original data feature vector size: {data_shape}")
 
 def get_scores(y_test, y):
-    res = [precision_score(y_test, y, pos_label='1')*100,
-               recall_score(y_test, y, pos_label='1')*100,
-               f1_score(y_test, y, pos_label='1')*100, 
+    res = [precision_score(y_test, y)*100,
+               recall_score(y_test, y)*100,
+               f1_score(y_test, y)*100, 
                accuracy_score(y_test, y)*100]
     return res
 
