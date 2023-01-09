@@ -1,4 +1,4 @@
-CLF_RUNS = 1 #!make this 10!
+CLF_RUNS = 10
 
 import pandas as pd
 import numpy as np
@@ -128,7 +128,7 @@ def run_experminet():
                 'MLP': run_k_fold(run_mlp),
                 'SVM': run_k_fold(run_svm)}
 
-    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Avg. Time', 'Total Time'] #add time
+    rows = ['Avg. Precision', 'Avg. Recall', 'Avg. F-score', 'Avg. Accuracy', 'Avg. Time', 'Total Time']
     res = pd.DataFrame(res_dict, index=rows)
     return res, rows
 
