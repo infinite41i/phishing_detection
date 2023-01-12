@@ -1,4 +1,6 @@
 CLF_RUNS = 10
+PERFORM_PCA = True
+PCA_COMPONENTS = 10
 
 import pandas as pd
 import numpy as np
@@ -6,9 +8,11 @@ import arff
 from time import time
 
 from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import CategoricalNB
+from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn import svm
 
@@ -51,6 +55,14 @@ def get_scores(y_test, y):
 def run_rfc():
     start_time = time()
     X_train, X_test, y_train, y_test = train_test_split(data, target)
+
+    if(PERFORM_PCA == True):
+        #Perform a PCA for dimension reduction
+        pca = PCA(n_components=PCA_COMPONENTS)
+        pca.fit(X_train)
+        X_train = pca.transform(X_train)
+        X_test = pca.transform(X_test)
+    
     clf = RandomForestClassifier()
     clf.fit(X_train, y_train)
     
@@ -67,6 +79,15 @@ def run_bayes():
     start_time = time()
     X_train, X_test, y_train, y_test = train_test_split(data, target)
     clf = CategoricalNB()
+
+    if(PERFORM_PCA == True):
+        #Perform a PCA for dimension reduction
+        pca = PCA(n_components=PCA_COMPONENTS)
+        pca.fit(X_train)
+        X_train = pca.transform(X_train)
+        X_test = pca.transform(X_test)
+        clf = GaussianNB()
+    
     clf.fit(X_train, y_train)
     
     y = clf.predict(X_test)
@@ -81,6 +102,14 @@ def run_bayes():
 def run_mlp():
     start_time = time()
     X_train, X_test, y_train, y_test = train_test_split(data, target)
+
+    if(PERFORM_PCA == True):
+        #Perform a PCA for dimension reduction
+        pca = PCA(n_components=PCA_COMPONENTS)
+        pca.fit(X_train)
+        X_train = pca.transform(X_train)
+        X_test = pca.transform(X_test)
+    
     clf = MLPClassifier(solver='lbfgs', max_iter=600, tol=0.001)
     clf.fit(X_train, y_train)
     y = clf.predict(X_test)
@@ -95,6 +124,14 @@ def run_mlp():
 def run_svm():
     start_time = time()
     X_train, X_test, y_train, y_test = train_test_split(data, target)
+
+    if(PERFORM_PCA == True):
+        #Perform a PCA for dimension reduction
+        pca = PCA(n_components=PCA_COMPONENTS)
+        pca.fit(X_train)
+        X_train = pca.transform(X_train)
+        X_test = pca.transform(X_test)
+    
     clf = svm.SVC()
     clf.fit(X_train, y_train)
     
